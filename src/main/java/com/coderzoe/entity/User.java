@@ -1,5 +1,7 @@
 package com.coderzoe.entity;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * @author yhs
  * @date 2020/5/19 22:00
