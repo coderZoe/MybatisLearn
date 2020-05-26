@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coderzoe.dao.UserInfoMapper">
+    <resultMap id="UserMap" type="com.coderzoe.entity.UserInfo">
+        <result column="id" property="id"/>
+        <result column="family_name" property="familyName"/>
+        <result column="first_name" property="firstName"/>
+    </resultMap>
+    <select id="getUserInfoById" resultMap="UserMap" parameterType="int">
+        select * from user_info where user_info.id = #{id}
+    </select>
+    <!-- 通过setting设置开启驼峰转化 -->
+    <select id="getAllUserInfo" resultType="com.coderzoe.entity.UserInfo">
+        select * from user_info
+    </select>
+</mapper>

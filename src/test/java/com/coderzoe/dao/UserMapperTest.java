@@ -2,11 +2,13 @@ package com.coderzoe.dao;
 
 import com.coderzoe.entity.User;
 import com.coderzoe.util.MybatisUtil;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yhs
@@ -90,7 +92,7 @@ public class UserMapperTest {
      * @data: 2020/05/20 21:52
      * @author: yhs
      * @return:
-     * @description: Java代码通过通配符做模糊查询 但是通配符往往在Mybatis中写入
+     * @description: Java代码通过通配符做模糊查询 但是通配符往往在Mybatis中写入通配符
      */
     @Test
     public void getUserLike(){
@@ -100,4 +102,106 @@ public class UserMapperTest {
         System.out.println(userList);
         sqlSession.close();
     }
+
+    /**
+     * @data: 2020/05/22 23:49
+     * @author: yhs
+     * @return:
+     * @description: 分页
+     */
+    @Test
+    public void findUserByPage(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        Map<String,Integer> map = new HashMap<>();
+        map.put("startIndex",0);
+        map.put("pageSize",3);
+        List<User> userByPage = mapper.findUserByPage(map);
+        System.out.println(userByPage);
+        MybatisUtil.closeSqlSession();
+    }
+
+    /**
+     * @data: 2020/05/22 23:56
+     * @author: yhs
+     * @return:
+     * @description: 通过RowBounds实现分页
+     *               不建议使用RowBounds 因为他是先查出所有的信息 再截取 与limit不同
+     */
+    @Test
+    public void findUserByRowBounds(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        List<User> userList = sqlSession.selectList("com.coderzoe.dao.UserMapper.getUserList");
+        System.out.println(userList);
+
+        RowBounds rowBounds = new RowBounds(0, 2);
+        List<User> objects = sqlSession.selectList("com.coderzoe.dao.UserMapper.getUserList", null, rowBounds);
+        System.out.println(objects);
+        MybatisUtil.closeSqlSession();
+    }
+
+    /**
+     * @data: 2020/05/23 18:25
+     * @author: yhs
+     * @return:
+     * @description: 使用注解开发  使用注解开发时，如果有对应了接口的XML文件且已经在配置里注册， 则无需再注册
+     *               如果没有接口的XML文件 则需要在配置里注册一个类的mapper<mapper class = ""/>
+     *               对于复杂一些的SQL或字段映射 则注解的方式并不合适 还是应该在xml文件中写SQL语句与resultMap映射
+     */
+    @Test
+    public void getUsers(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        List<User> userList = mapper.getUsers();
+        System.out.println(userList);
+        MybatisUtil.closeSqlSession();
+    }
+
+    @Test
+    public void getUserByIdAndName(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User yhs = mapper.getUserByIdAndName(1, "yhs");
+        System.out.println(yhs);
+        MybatisUtil.closeSqlSession();
+    }
+
+    @Test
+    public void insertUser3(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = new User(6L,"yhs","12321");
+        mapper.insertUser3(user);
+        sqlSession.commit();
+        //打印出来看看
+        getUsers();
+
+        MybatisUtil.closeSqlSession();
+    }
+
+    @Test
+    public void updateUser(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = new User(6L,"yhs","32121");
+        mapper.updateUser(user);
+        sqlSession.commit();
+        getUsers();
+
+        MybatisUtil.closeSqlSession();
+    }
+
+    @Test
+    public void deleteUser(){
+        SqlSession sqlSession = MybatisUtil.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.deleteUser(6);
+        getUsers();
+
+        sqlSession.commit();
+        getUsers();
+
+        MybatisUtil.closeSqlSession();
+    }
+
 }

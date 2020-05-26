@@ -35,6 +35,8 @@ public class MybatisUtil {
         SqlSession sqlSession = sessionThreadLocal.get();
         if(sqlSession==null){
             sqlSession = sqlSessionFactory.openSession();
+            //设置事务自动提交 默认是false
+//            sqlSession = sqlSessionFactory.openSession(true);
         }
         return sqlSession;
     }

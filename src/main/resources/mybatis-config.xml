@@ -9,6 +9,12 @@
 <!--    <typeAliases>-->
 <!--        <package name="com.coderzoe.entity"/>-->
 <!--    </typeAliases>-->
+    <settings>
+        <!-- 配置开启驼峰 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 配置日志 -->
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
     <environments default="mysql_developer">
         <environment id="mysql_developer">
             <transactionManager type="jdbc"/>
@@ -23,5 +29,6 @@
     <mappers>
         <!--<mapper resource="com/coderzoe/dao/UserMapper.xml"/>-->
         <mapper class="com.coderzoe.dao.UserMapper"/>
+        <mapper resource="com/coderzoe/dao/UserInfoMapper.xml"/>
     </mappers>
 </configuration>

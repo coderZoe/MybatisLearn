@@ -1,5 +1,6 @@
 package com.coderzoe.entity;
 
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -7,50 +8,16 @@ import org.apache.ibatis.type.Alias;
  * @date 2020/5/19 22:00
  * @description 数据库实体
  */
+
+@Data //无参构造 toString hashcode equals getter setter
+@NoArgsConstructor  //无参
+@AllArgsConstructor //有参
+@EqualsAndHashCode //equals和hashcode方法
+@Getter //get方法 放到类上生成所有的get方法 放到字段生成这个字段的get方法
+@Setter //set方法 同get
 public class User {
     private Long id;
     private String name;
     private String password;
 
-    public User() {
-    }
-
-    public User(Long id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }

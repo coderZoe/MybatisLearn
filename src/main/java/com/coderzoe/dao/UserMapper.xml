@@ -24,4 +24,7 @@
     <select id="getUserLike" resultType="com.coderzoe.entity.User">
         select * from user where user.name like "%"#{value}"%"
     </select>
+    <select id="findUserByPage" resultType="com.coderzoe.entity.User" parameterType="map">
+        select * from user limit #{startIndex},#{pageSize};
+    </select>
 </mapper>
