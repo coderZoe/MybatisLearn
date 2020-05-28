@@ -30,5 +30,7 @@
         <!--<mapper resource="com/coderzoe/dao/UserMapper.xml"/>-->
         <mapper class="com.coderzoe.dao.UserMapper"/>
         <mapper resource="com/coderzoe/dao/UserInfoMapper.xml"/>
+        <mapper resource="com/coderzoe/dao/StudentMapper.xml"/>
+        <mapper resource="com/coderzoe/dao/TeacherMapper.xml"/>
     </mappers>
 </configuration>
