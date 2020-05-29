@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coderzoe.dao.BlogMapper">
+
+    <insert id="insertBlog">
+        insert into blog(id, title, author, create_time, views) value (#{id}, #{title}, #{author}, #{createTime}, #{views});
+    </insert>
+    
+    <sql id="insertKey">
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="title!=null">
+                title,
+            </if>
+            <if test="author!=null">
+                author,
+            </if>
+            <if test="create_time!=null">
+                create_time,
+            </if>
+            <if test="views!=null">
+                views,
+            </if>
+        </trim>
+    </sql>
+    <sql id="inserValue">
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="title!=null">
+                #{title},
+            </if>
+            <if test="author!=null">
+                #{author},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="views!=null">
+                #{views},
+            </if>
+        </trim>
+    </sql>
+    <insert id="insertBlog2">
+        insert into blog (<include refid="insertKey"/>) values(<include refid="inserValue"/>)
+    </insert>
+    <update id="updateBlog" parameterType="map">
+        update blog
+        <set>
+            <if test="title!=null">
+                title = #{title},
+            </if>
+            <if test="author!=null">
+                author = #{author},
+            </if>
+        </set>
+            where id = #{id}
+    </update>
+    <select id="queryBlogIf"  parameterType="map" resultType="com.coderzoe.entity.Blog">
+        select * from blog
+        <where>
+            <if test="title!=null">
+                title = #{title}
+            </if>
+            <if test="author!=null">
+                and author = #{author}
+            </if>
+            <if test="view!=null">
+                and view > #{view}
+            </if>
+        </where>
+    </select>
+    <select id="queryBlogChoose"  parameterType="map" resultType="com.coderzoe.entity.Blog">
+        select * from blog
+        <where>
+            <choose>
+                <when test="title!=null">
+                    title = #{title}
+                </when>
+                <when test="author!=null">
+                    and author = #{author}
+                </when>
+                <otherwise>
+                    and views > 5000
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="queryBlogForeach" parameterType="list" resultType="com.coderzoe.entity.Blog">
+        select * from blog where id in 
+            <foreach collection="list" item="item" index="index"
+                     open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+    </select>
+</mapper>

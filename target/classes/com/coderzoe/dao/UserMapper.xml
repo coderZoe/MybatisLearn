@@ -2,9 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.coderzoe.dao.UserDao">
+<mapper namespace="com.coderzoe.dao.UserMapper">
     <insert id="insertUser" parameterType="com.coderzoe.entity.User">
         insert into smbms.user(id,name,password) values(#{id},#{name},#{password})
+    </insert>
+    <insert id="insertUser2" parameterType="map">
+        insert into smbms.user(id,name,password) values (#{userId},#{userName},#{userPwd})
     </insert>
     <update id="update" parameterType="com.coderzoe.entity.User">
         update smbms.user set id=#{id},name=#{name},password=#{password} where id=#{id};
@@ -17,5 +20,11 @@
     </select>
     <select id="getUserById" resultType="com.coderzoe.entity.User" parameterType="long">
         select * from smbms.user where id = #{id}
+    </select>
+    <select id="getUserLike" resultType="com.coderzoe.entity.User">
+        select * from user where user.name like "%"#{value}"%"
+    </select>
+    <select id="findUserByPage" resultType="com.coderzoe.entity.User" parameterType="map">
+        select * from user limit #{startIndex},#{pageSize};
     </select>
 </mapper>
